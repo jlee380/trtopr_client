@@ -11,7 +11,7 @@ const Chart = () => {
 		const date = [];
 		const count = [];
 
-		const dataFromServer = await fetch('http://localhost:8443/data');
+		const dataFromServer = await fetch('./data.json');
 		const json = await dataFromServer.json();
 
 		for (const key in json) {
