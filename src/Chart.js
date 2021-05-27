@@ -11,7 +11,7 @@ const Chart = () => {
 		const date = [];
 		const count = [];
 
-		const dataFromServer = await fetch('http://localhost:3001/data');
+		const dataFromServer = await fetch('http://localhost:8443/data');
 		const json = await dataFromServer.json();
 
 		for (const key in json) {
@@ -21,7 +21,13 @@ const Chart = () => {
 		for (const data of arr) {
 			loopCount++;
 			dateExtraction(data, loopCount);
-			date.push(data.time_stamp);
+			const formattedDate = `${data.time_stamp
+				.slice(5, 10)
+				.replace('-', '/')}, ${data.time_stamp
+				.split('T')[1]
+				.slice(0, 8)}`;
+
+			date.push(formattedDate);
 			count.push(data.pathwayCounter.CWE);
 		}
 
@@ -29,7 +35,7 @@ const Chart = () => {
 			labels: date,
 			datasets: [
 				{
-					label: 'level of thiccness',
+					label: 'Count',
 					data: count,
 					backgroundColor: ['rgba(75, 192, 192, 0.6)'],
 					borderWidth: 4,
@@ -43,22 +49,20 @@ const Chart = () => {
 	}, []);
 
 	const dateExtraction = (data, loopCount) => {
-		let temp;
-		let max;
 		let currentTime = data.time_stamp;
 
-		// console.log(data.time_stamp.slice(5, 10).replace('-', '/'));
+		console.log(data.time_stamp.slice(5, 10).replace('-', '/'));
 	};
 
 	return (
 		<div className='App'>
-			<h1>Chart</h1>
+			<h1>TR to PR (Essential)</h1>
 			<div>
 				<Line
 					data={chartData}
 					options={{
 						responsive: true,
-						title: { text: 'THICCNESS SCALE', display: true },
+						title: { text: 'TR to PR', display: true },
 						scales: {
 							yAxes: [
 								{
